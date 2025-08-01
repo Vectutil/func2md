@@ -1,0 +1,40 @@
+{
+  "name": "func2md",
+  "version": "1.0.0",
+  "description": "A Vite plugin to generate VitePress documentation from JSDoc and TypeScript types",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "example:dev": "cd example && npm run dev",
+    "example:build": "cd example && npm run build"
+  },
+  "keywords": [
+    "vite",
+    "vitepress",
+    "documentation",
+    "jsdoc",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vite": "^6.0.5",
+    "vitepress": "^1.5.0",
+    "vitest": "^3.0.4"
+  },
+  "dependencies": {
+    "jsdoc": "^4.0.4"
+  }
+}
