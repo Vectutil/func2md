@@ -82,18 +82,18 @@ The plugin generates Markdown files with the following structure:
 
 Function description
 
-## 参数
+## Parameters
 
-| 参数名 | 类型 | 说明 |
-|--------|------|------|
+| Name | Type | Description |
+|------|------|-------------|
 | paramName | `type` | Parameter description |
 
-## 返回值
+## Return Value
 
-- 类型: `returnType`
-- 说明: Return value description
+- Type: `returnType`
+- Description: Return value description
 
-## 示例
+## Examples
 
 ```ts
 // Example code
