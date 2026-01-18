@@ -1,16 +1,28 @@
 {
   "name": "func2md",
-  "version": "0.0.1-alpha",
+  "type": "module",
+  "version": "0.0.2",
   "description": "A Vite plugin to generate VitePress documentation from JSDoc and TypeScript types",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "bin": {
+    "func2md": "./bin/func2md.js"
+  },
   "files": [
-    "dist"
+    "dist",
+    "bin"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "tsdown 2>&1 | grep -v '\\[38;5;2' | grep -v 'MISSING_EXPORT' | grep -v 'Missing export' | grep -v 'IMPORT_IS_UNDEFINED' | grep -v 'will always be undefined' | grep -v '^\\s*$'",
+    "dev": "tsdown --watch",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -24,15 +36,37 @@
     "jsdoc",
     "typescript"
   ],
-  "author": "",
+  "author": "Azir-11",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vectutil/func2md.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Vectutil/func2md/issues"
+  },
+  "homepage": "https://github.com/Vectutil/func2md#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "vite": ">=5"
+  },
+  "optionalDependencies": {
+    "vite": ">=5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
     "@types/node": "^22.10.10",
-    "tsup": "^8.3.5",
+    "postcss": "^8.5.6",
+    "tsdown": "0.20.0-beta.3",
     "typescript": "^5.9.2",
     "vite": "^6.0.5",
-    "vitest": "^3.0.4",
-    "vitepress": "^1.5.0"
+    "vitepress": "^1.5.0",
+    "vitest": "^3.0.4"
   },
   "dependencies": {
     "jsdoc": "^4.0.4"

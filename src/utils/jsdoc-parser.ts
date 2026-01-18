@@ -76,11 +76,12 @@ export function parseJSDoc(jsdoc: string): JSDocInfo {
   // Extract parameters
   info.params = []
   lines.forEach(line => {
-    const paramMatch = line.match(/@param\s+{([^}]+)}\s+(\w+)\s+(.+)/)
+    // Match @param with or without type: @param {string} name - description or @param name - description
+    const paramMatch = line.match(/@param\s+(?:{([^}]+)})?\s*(\w+)\s*-\s*(.+)/)
     if (paramMatch) {
       info.params!.push({
         name: paramMatch[2],
-        type: paramMatch[1],
+        type: paramMatch[1] || 'any',
         description: paramMatch[3]
       })
     }

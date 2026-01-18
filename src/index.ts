@@ -3,6 +3,8 @@ import { existsSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
 import { scanAndGenerateDocs } from './core/scanner'
 
+export { scanAndGenerateDocs }
+
 export interface Func2MdOptions {
   /**
    * Source directory to scan for functions
