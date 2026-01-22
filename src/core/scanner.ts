@@ -154,7 +154,7 @@ function generatePages(functions: ReturnType<typeof extractFunctions>, srcDir: s
   }
 
   const pagesJson = JSON.stringify(root.items ?? [], null, 2)
-  const output = `// @ts-nocheck\n/* eslint-disable */\n/* prettier-ignore-start */\n/**\n * 此文件由 func2md 自动生成。\n * 仅允许修改菜单分组的 text 字段。\n */\nconst pages = ${pagesJson}\n/* prettier-ignore-end */\n\nexport default pages\n`
+  const output = `/* eslint-disable eslint-comments/no-unlimited-disable */\n// @ts-nocheck\n/* eslint-disable */\n/* prettier-ignore-start */\n/**\n * 此文件由 func2md 自动生成。\n * 仅允许修改菜单分组的 text 字段。\n */\nconst pages = ${pagesJson}\n/* prettier-ignore-end */\n\nexport default pages\n`
   writeFileSync(pagesPath, output)
 }
 
