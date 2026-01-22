@@ -1,5 +1,6 @@
 export interface JSDocInfo {
   title?: string
+  menuTitle?: string
   desc?: string
   example?: string
   params?: Array<{
@@ -25,6 +26,12 @@ export function parseJSDoc(jsdoc: string): JSDocInfo {
     info.title = titleMatch.replace('@title', '').trim()
   } else if (lines.length > 0) {
     info.title = lines[0]
+  }
+
+  // Extract menu title (@MenuTitle)
+  const menuTitleMatch = lines.find(line => /@MenuTitle\b/i.test(line))
+  if (menuTitleMatch) {
+    info.menuTitle = menuTitleMatch.replace(/@MenuTitle/i, '').trim()
   }
   
   // Extract description - all lines that don't start with @

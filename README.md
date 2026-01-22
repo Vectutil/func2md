@@ -65,10 +65,14 @@ npx func2md --src-dir=lib --out-dir=documentation
 在代码中直接调用：
 
 ```typescript
-import { scanAndGenerateDocs } from 'func2md'
+import { scanAndGenerateDocs, getRecords } from 'func2md'
 
 // 生成文档
 await scanAndGenerateDocs('./src', './docs')
+
+// 读取生成的 _pages.js 记录
+const pages = getRecords({ outDir: './docs' })
+const mathGroup = getRecords({ outDir: './docs', text: '数学' })
 ```
 
 ## 配置选项
@@ -81,12 +85,14 @@ await scanAndGenerateDocs('./src', './docs')
 
 ## JSDoc 格式
 
-插件支持以下 JSDoc 标签：
+插件支持以下 JSDoc 标签与行为：
 
-- `@title` - 函数标题（可选，默认为描述第一行）
-- `@param` - 函数参数，包含类型和描述
-- `@returns` 或 `@return` - 返回值，包含类型和描述
-- `@example` - 代码示例
+- `@title`：生成文档的主标题（H1）。未填写时使用注释第一行作为标题。
+- `@MenuTitle`：生成到 _pages.js 的菜单标题，用于侧边栏条目显示。
+- `@param {type} name - desc`：生成「参数」表格行。
+- `@returns` / `@return`：生成「返回值」区块。
+- `@example`：生成「示例」代码块。
+- 注释中位于第一个标签（@param/@returns/@example）之前的文本，会作为「说明」内容。
 
 示例：
 
@@ -94,6 +100,7 @@ await scanAndGenerateDocs('./src', './docs')
 /**
  * @title 两数相加
  * 将两个数字相加
+ * @MenuTitle 数学/加法
  * @param {number} a - 第一个数字
  * @param {number} b - 第二个数字
  * @returns {number} 两数之和
@@ -133,6 +140,8 @@ function add(a, b) {
 ```ts
 // 示例代码
 ```
+
+生成的 _pages.js 仅导出 pages 数组，便于 VitePress 直接引入。需要筛选记录时请使用库导出的 `getRecords()`。
 ```
 
 ## 开发

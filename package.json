@@ -1,7 +1,7 @@
 {
   "name": "func2md",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A Vite plugin to generate VitePress documentation from JSDoc and TypeScript types",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

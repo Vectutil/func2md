@@ -14,7 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 // Parse arguments
 const args = process.argv.slice(2)
 const srcDir = args.find(a => a.startsWith('--src-dir='))?.split('=')[1] || 'src'
-const outDir = args.find(a => a.startsWith('--out-dir='))?.split('=')[1] || 'docs'
+const outDir = args.find(a => a.startsWith('--out-dir='))?.split('=')[1] || 'docs/_generated'
 
 // Resolve paths
 const resolvedSrcDir = resolve(srcDir)

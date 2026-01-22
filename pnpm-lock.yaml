@@ -24,15 +24,16 @@ importers:
       typescript:
         specifier: ^5.9.2
         version: 5.9.3
-      vite:
-        specifier: ^6.0.5
-        version: 6.4.1(@types/node@22.19.7)
       vitepress:
         specifier: ^1.5.0
         version: 1.6.4(@algolia/client-search@5.46.3)(@types/node@22.19.7)(postcss@8.5.6)(search-insights@2.17.3)(typescript@5.9.3)
       vitest:
         specifier: ^3.0.4
         version: 3.2.4(@types/node@22.19.7)
+    optionalDependencies:
+      vite:
+        specifier: '>=5'
+        version: 6.4.1(@types/node@22.19.7)
 
 packages:
 

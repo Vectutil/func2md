@@ -2,8 +2,9 @@ import type { Plugin } from 'vite'
 import { existsSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
 import { scanAndGenerateDocs } from './core/scanner'
+import { getRecords } from './core/pages'
 
-export { scanAndGenerateDocs }
+export { scanAndGenerateDocs, getRecords }
 
 export interface Func2MdOptions {
   /**

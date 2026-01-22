@@ -36,6 +36,19 @@ export default defineConfig({
 })
 ```
 
+### JavaScript API
+
+```ts
+import { scanAndGenerateDocs, getRecords } from 'func2md'
+
+// 生成文档
+await scanAndGenerateDocs('./src', './docs')
+
+// 读取生成的 _pages.js 记录
+const pages = getRecords({ outDir: './docs' })
+const mathGroup = getRecords({ outDir: './docs', text: '数学' })
+```
+
 ### 配置选项
 
 | 选项 | 类型 | 默认值 | 说明 |
@@ -46,12 +59,14 @@ export default defineConfig({
 
 ## JSDoc 格式
 
-插件解析具有以下特殊标签的 JSDoc 注释：
+插件解析具有以下特殊标签的 JSDoc 注释，并按如下规则生成文档：
 
-- `@title` - 函数标题（可选，默认为描述的第一行）
-- `@param` - 带类型和描述的函数参数
-- `@returns` 或 `@return` - 带类型和描述的返回值
-- `@example` - 代码示例
+- `@title`：生成文档主标题（H1），缺省时使用注释第一行。
+- `@MenuTitle`：生成到 _pages.js 的菜单标题，用于侧边栏条目显示。
+- `@param {type} name - desc`：生成参数表格行。
+- `@returns` / `@return`：生成返回值说明。
+- `@example`：生成示例代码块。
+- 标签之前的文本会作为「说明」内容。
 
 示例：
 
@@ -59,6 +74,7 @@ export default defineConfig({
 /**
  * @title 两数相加
  * 这个函数将两个数字相加
+ * @MenuTitle 数学/加法
  * @param {number} a - 第一个数字
  * @param {number} b - 第二个数字
  * @returns {number} a 和 b 的和
@@ -98,6 +114,8 @@ function add(a, b) {
 ```ts
 // 示例代码
 ```
+
+生成的 _pages.js 仅导出 pages 数组。如需筛选记录，请使用库导出的 `getRecords()`。
 ```
 
 ## 开发

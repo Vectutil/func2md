@@ -136,7 +136,7 @@ describe('parseJSDoc', () => {
  * @param {number} age - The age
  */
 `
-    const result = parseJSDoc(jsdoc)
+    const result: any = parseJSDoc(jsdoc)
 
     expect(result.params.length).toBe(2)
     expect(result.params[0].name).toBe('name')
@@ -224,5 +224,84 @@ function test(name: string): string {
 
     // Should not throw and should create the output directory
     expect(existsSync(outDir)).toBe(true)
+  })
+
+  it('should generate pages and preserve group text', async () => {
+    const vpRoot = resolve(tempDir, 'docs')
+    const generatedOutDir = resolve(vpRoot, '_generated')
+    const vpConfigDir = resolve(vpRoot, '.vitepress')
+    mkdirSync(vpConfigDir, { recursive: true })
+    mkdirSync(generatedOutDir, { recursive: true })
+    writeFileSync(resolve(vpConfigDir, 'config.ts'), 'export default {}')
+
+    mkdirSync(resolve(srcDir, 'sub'), { recursive: true })
+    writeFileSync(
+      resolve(srcDir, 'sub', 'area.ts'),
+      `
+/**
+ * @title Area
+ * @MenuTitle 面积
+ */
+function area() {
+  return 0
+}
+`
+    )
+
+    const pagesDir = resolve(vpRoot, '.vitepress')
+    mkdirSync(pagesDir, { recursive: true })
+    const existingPages = [
+      {
+        text: '自定义分组',
+        dir: 'sub',
+        items: [
+          {
+            text: '旧条目',
+            link: '/_generated/old'
+          }
+        ]
+      }
+    ]
+    writeFileSync(
+      resolve(pagesDir, '_pages.js'),
+      `export default ${JSON.stringify(existingPages, null, 2)}\n`
+    )
+
+    await scanAndGenerateDocs(srcDir, generatedOutDir)
+
+    const pagesRaw = readFileSync(resolve(pagesDir, '_pages.js'), 'utf-8')
+    const match = pagesRaw.match(/const\s+pages\s*=\s*(\[[\s\S]*\])\s*;?/)
+      ?? pagesRaw.match(/export\s+default\s+(\[[\s\S]*\])\s*;?\s*$/)
+    const pages = JSON.parse(match![1])
+
+    expect(pages[0].text).toBe('自定义分组')
+    expect(pages[0].items[0].text).toBe('面积')
+    expect(pages[0].items[0].link).toBe('/_generated/area')
+  })
+
+  it('should generate _pages.js in vitepress root when outDir is nested', async () => {
+    const vpRoot = resolve(tempDir, 'docs')
+    const generatedOutDir = resolve(vpRoot, '_generated')
+    const vpConfigDir = resolve(vpRoot, '.vitepress')
+    mkdirSync(vpConfigDir, { recursive: true })
+    mkdirSync(generatedOutDir, { recursive: true })
+
+    writeFileSync(
+      resolve(srcDir, 'nested.ts'),
+      `
+/**
+ * @title Nested
+ */
+function nested() {}
+`
+    )
+
+    await scanAndGenerateDocs(srcDir, generatedOutDir)
+
+    const expectedPagesPath = resolve(vpConfigDir, '_pages.js')
+    const wrongPagesPath = resolve(generatedOutDir, '.vitepress', '_pages.js')
+
+    expect(existsSync(expectedPagesPath)).toBe(true)
+    expect(existsSync(wrongPagesPath)).toBe(false)
   })
 })

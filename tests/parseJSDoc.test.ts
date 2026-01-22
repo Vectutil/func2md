@@ -49,4 +49,16 @@ describe('parseJSDoc', () => {
     expect(result.params).toHaveLength(0)
     expect(result.returns).toBeDefined()
   })
+
+  it('should parse MenuTitle', () => {
+    const jsdoc = `
+      * @title Title
+      * @MenuTitle 自定义菜单标题
+      * Some description
+    `
+
+    const result = parseJSDoc(jsdoc)
+
+    expect(result.menuTitle).toBe('自定义菜单标题')
+  })
 })
